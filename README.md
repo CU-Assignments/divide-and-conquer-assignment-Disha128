@@ -145,4 +145,147 @@ public:
 # Output
 ![image](https://github.com/user-attachments/assets/fbe7e7f1-bd15-4f90-b7fe-af7d7a5051b4)
 
+# The Skyline Problem
+class Solution {
 
+public:
+
+    vector<vector<int>> getSkyline(vector<vector<int>>& buildings) {
+
+        vector<pair<int, int>> events;
+
+        for (auto& b : buildings) {
+
+            events.emplace_back(b[0], -b[2]);
+
+            events.emplace_back(b[1], b[2]);
+
+        }
+
+        sort(events.begin(), events.end());
+
+        
+
+        multiset<int> heights = {0};
+
+        vector<vector<int>> skyline;
+
+        int prevHeight = 0;
+
+        
+
+        for (auto& [x, h] : events) {
+
+            if (h < 0) heights.insert(-h);
+
+            else heights.erase(heights.find(h));
+
+            int currHeight = *heights.rbegin();
+
+            if (currHeight != prevHeight) {
+
+                skyline.push_back({x, currHeight});
+
+                prevHeight = currHeight;
+
+            }
+
+        }
+
+        return skyline;
+
+    }
+
+};
+# Output
+![image](https://github.com/user-attachments/assets/d4500d9a-5182-4f85-8bbf-5b90c9c0f35e)
+
+# Reverse Pairs
+class Solution {
+
+public:
+
+    int reversePairs(vector<int>& nums) {
+
+        return mergeSort(nums, 0, nums.size() - 1);
+
+    }
+
+
+
+    int mergeSort(vector<int>& nums, int l, int r) {
+
+        if (l >= r) return 0;
+
+        int mid = (l + r) / 2, count = mergeSort(nums, l, mid) + mergeSort(nums, mid + 1, r);
+
+        int j = mid + 1;
+
+        
+
+        for (int I = l; I <= mid; I++) {
+
+            while (j <= r && nums[I] > 2LL * nums[j]) j++;
+
+            count += (j - (mid + 1));
+
+        }
+
+
+
+        inplace_merge(nums.begin() + l, nums.begin() + mid + 1, nums.begin() + r + 1);
+
+        return count;
+
+    }
+
+};
+# Output
+![image](https://github.com/user-attachments/assets/f048c55c-36c6-4571-9361-355e359fb941)
+
+# Longest Increasing Subsequence II
+#include <vector>
+
+#include <map>
+
+using namespace std;
+
+
+
+class Solution {
+
+public:
+
+    int lengthOfLIS(vector<int>& nums, int k) {
+
+        map<int, int> dp;
+
+        int maxLen = 1;
+
+        
+
+        for (int num : nums) {
+
+            int best = 0;
+
+            for (auto it = dp.lower_bound(num - k); it != dp.upper_bound(num - 1); ++it)
+
+                best = max(best, it->second);
+
+            
+
+            dp[num] = best + 1;
+
+            maxLen = max(maxLen, dp[num]);
+
+        }
+
+        
+
+        return maxLen;
+
+    }
+
+};
+# Output
+![image](https://github.com/user-attachments/assets/085fa602-513d-4095-9330-483dcef8653f)
